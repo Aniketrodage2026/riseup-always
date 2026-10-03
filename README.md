@@ -15,6 +15,25 @@ Open http://localhost:3001. Port 3000 was already serving another application du
 
 ## Production and validation
 
+### Render Static Site
+
+Use these settings for the existing Render Static Site:
+
+- Branch: `main`
+- Root Directory: leave blank (the GitHub repository already contains this app at its root)
+- Build Command: `npm ci && npm run build:static`
+- Publish Directory: `out` (not `dist` or `.next`)
+
+Save the settings and deploy the latest commit. `render.yaml` supplies the same configuration for a new Render Blueprint; adding it does not automatically update an existing manually configured service.
+
+`build:static` enables Next.js static export and creates `out/index.html`, the guide page, JavaScript, CSS, fonts and images. Interactive features and the WhatsApp flow still work. Images are served directly because Render Static Sites do not run the Next.js image-optimization server. No SPA catch-all rewrite is needed; each page has its own exported HTML.
+
+To preview the actual export locally, run `npm.cmd run build:static`, then `npm.cmd run preview:static` and open http://localhost:3108. You can run the browser tests against this preview by setting `$env:PLAYWRIGHT_BASE_URL = 'http://localhost:3108'` before `npm.cmd run test:e2e`.
+
+### Next.js server hosting
+
+The original server build remains available. After a static build, run the normal build again before using `npm run start`.
+
 ```powershell
 npm.cmd run build
 npm.cmd run start -- --port 3001
@@ -58,4 +77,4 @@ The user-supplied ZIP provides the design, images and patient-story text. The ol
 
 Basic knee anatomy was cross-checked against [AAOS OrthoInfo](https://www.orthoinfo.org/diseases--conditions/meniscus-tears/). The images are illustrative, testimonials are identified as experiences published by the clinic, and the copy avoids guarantees of cure or avoiding surgery. Clinic credentials and testimonials are reproduced from supplied/published content, not independently verified.
 
-The project is ready to run locally and build for a Next.js-compatible host. It has not been deployed or connected to a booking backend.
+The project supports both Render Static Sites and Next.js server hosting. It is not connected to a booking backend.

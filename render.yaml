@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: jivan-urja
+    runtime: static
+    buildCommand: npm ci && npm run build:static
+    staticPublishPath: ./out
